@@ -17,8 +17,14 @@ def list_tasks(status: str | None = None, q: str | None = None) -> list[dict[str
             continue
 
         if query:
-            title = str(task.get("title", "")).casefold()
-            description = str(task.get("description", "")).casefold()
+            title = task.get("title", "")
+            description = task.get("description", "")
+            if not isinstance(title, str):
+                title = str(title)
+            if not isinstance(description, str):
+                description = str(description)
+            title = title.casefold()
+            description = description.casefold()
             if query not in title and query not in description:
                 continue
 
