@@ -53,9 +53,10 @@ def complete_task(task_id: int) -> dict[str, Any] | None:
 
     for task in tasks:
         if task["id"] == task_id:
-            if task["status"] != "done":
+            if task["status"] != "done" or task["completed_at"] is None:
                 task["status"] = "done"
-                task["completed_at"] = datetime.now(timezone.utc).isoformat()
+                if task["completed_at"] is None:
+                    task["completed_at"] = datetime.now(timezone.utc).isoformat()
                 save_tasks(tasks)
             return task
 
