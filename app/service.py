@@ -6,6 +6,10 @@ from typing import Any
 from .store import load_tasks, next_task_id, save_tasks
 
 
+def _ensure_string(value: Any) -> str:
+    return value if isinstance(value, str) else str(value)
+
+
 def list_tasks(status: str | None = None, q: str | None = None) -> list[dict[str, Any]]:
     """Return task records, optionally filtered by status and search text."""
     tasks = load_tasks()
@@ -17,14 +21,8 @@ def list_tasks(status: str | None = None, q: str | None = None) -> list[dict[str
             continue
 
         if query:
-            title = task.get("title", "")
-            description = task.get("description", "")
-            if not isinstance(title, str):
-                title = str(title)
-            if not isinstance(description, str):
-                description = str(description)
-            title = title.casefold()
-            description = description.casefold()
+            title = _ensure_string(task.get("title", "")).casefold()
+            description = _ensure_string(task.get("description", "")).casefold()
             if query not in title and query not in description:
                 continue
 
