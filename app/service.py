@@ -7,7 +7,7 @@ from .store import load_tasks, next_task_id, save_tasks
 
 
 def _ensure_string(value: Any) -> str:
-    return value if isinstance(value, str) else str(value)
+    return value if isinstance(value, str) else ""
 
 
 def list_tasks(status: str | None = None, q: str | None = None) -> list[dict[str, Any]]:

@@ -43,6 +43,20 @@ class ListTasksTests(unittest.TestCase):
     def test_combines_status_and_q_filters(self, _load_tasks):
         self.assertEqual(list_tasks(status="open", q="plan"), [TASKS[2]])
 
+    @patch(
+        "app.service.load_tasks",
+        return_value=[
+            {
+                "id": 4,
+                "title": None,
+                "description": "Needs follow-up",
+                "status": "open",
+            }
+        ],
+    )
+    def test_ignores_non_string_title_values(self, _load_tasks):
+        self.assertEqual(list_tasks(q="follow"), [{"id": 4, "title": None, "description": "Needs follow-up", "status": "open"}])
+
 
 if __name__ == "__main__":
     unittest.main()
